@@ -93,12 +93,14 @@
         } 
     }
 
+
 // dibujar paleta
     dibujarCuadrado(0,0,colores[1]);
     dibujarCuadrado(25,0,colores[2]);
     dibujarCuadrado(50,0,colores[0]);
     
     pantalla.onclick = paleta;
+    pantalla.ontouchstart=habilitarDibujar;
     pantalla.onmousemove = capturarMovimiento;
     pantalla.onmousedown = habilitarDibujar;
     pantalla.onmouseup = deshabilitarDibujar;
