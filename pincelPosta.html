@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <title>Program4</title> 
+</head>
+<body>
+
+<canvas width="600" height="400">
+
+
+</canvas>
+
+<script>
+
+    var pantalla = document.querySelector('canvas');
+    var pincel = pantalla.getContext('2d');
+    
+    pincel.fillStyle = 'grey';
+    pincel.fillRect(0, 0, 600, 400);
+
+    var puedoDibujar = false;
+    var colores = ["blue","red","green"];
+    var colorActivo = 0;
+    
+
+    function dibujarCuadrado(x,y,color) {
+    pincel.fillStyle = color;
+    pincel.fillRect(x,y,25,25); 
+    pincel.strokeStyle = "black"; 
+    pincel.strokeRect(x,y,25,25); 
+    }
+
+    function dibujarCirculo(x, y, colorActivo) {
+
+            if (puedoDibujar) {
+
+                pincel.fillStyle = colores[colorActivo];
+                pincel.beginPath();
+                pincel.arc(x, y, 5, 0, 2 * 3.14);
+                pincel.fill();
+
+            }
+        }
+
+    function habilitarDibujar(evento) {
+          
+        puedoDibujar = true;   
+    }
+
+    function deshabilitarDibujar() {
+
+            puedoDibujar = false;
+    }
+
+    function capturarMovimiento(evento) {
+
+            var x = evento.pageX - pantalla.offsetLeft;
+            var y = evento.pageY - pantalla.offsetTop;
+
+            if (puedeDisenharArea(x, y)) {
+
+                dibujarCirculo(x, y, colorActivo);
+            }
+    }
+
+//restringir area de paleta
+    function puedeDisenharArea(xCoordenada, yCoordenada) {
+
+        if ((xCoordenada >= 0 && xCoordenada < (3 * 25 + 5)) &&
+            (yCoordenada >= 0 && yCoordenada < (25 + 5))) {
+
+            return false;
+
+        } else {
+
+            return true;
+        }
+    }    
+
+//logica de cambios de colores al clikear paleta
+    function paleta (evento) {
+        var x = evento.pageX - pantalla.offsetLeft;
+        var y = evento.pageY - pantalla.offsetTop;
+        if (x <25 && y<25) {
+            colorActivo=1;
+            console.log(colorActivo)
+        } else if (25 <x && x<50 && y<25) {
+            colorActivo=2;
+            console.log(colorActivo)
+        } else if (50 <x &&x<75 && y<25) {
+            colorActivo=0;
+            console.log(colorActivo)
+        } 
+    }
+
+// dibujar paleta
+    dibujarCuadrado(0,0,colores[1]);
+    dibujarCuadrado(25,0,colores[2]);
+    dibujarCuadrado(50,0,colores[0]);
+    
+    pantalla.onclick = paleta;
+    pantalla.onmousemove = capturarMovimiento;
+    pantalla.onmousedown = habilitarDibujar;
+    pantalla.onmouseup = deshabilitarDibujar;
+
+    
+</script>
+
+</body>
+</html>
